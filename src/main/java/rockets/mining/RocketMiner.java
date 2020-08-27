@@ -31,7 +31,6 @@ public class RocketMiner {
     }
 
     /**
-     * TODO: to be implemented & tested!
      * Returns the top-k active rocket, as measured by number of launches.
      *
      * @param k the number of rockets to be returned.
@@ -64,8 +63,6 @@ public class RocketMiner {
     }
 
     /**
-     * TODO: to be implemented & tested!
-     * <p>
      * Returns the top-k most reliable launch service providers as measured
      * by percentage of successful launches.
      *
@@ -125,8 +122,7 @@ public class RocketMiner {
     }
 
     /**
-     * TODO: to be implemented & tested!
-     * <p>
+     
      * Returns the successful launch rate in <code>year</code> measured by the
      * number of successful launches and total number of launches
      *
@@ -145,7 +141,6 @@ public class RocketMiner {
     }
 
     /**
-     * TODO: to be implemented & tested!
      * <p>
      * Returns the top-k most expensive launches.
      *
