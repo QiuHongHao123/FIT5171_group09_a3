@@ -2,6 +2,8 @@ package rockets.mining;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,12 +16,14 @@ import rockets.model.Launch;
 import rockets.model.LaunchServiceProvider;
 import rockets.model.Rocket;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class RocketMinerUnitTest {
@@ -86,6 +90,52 @@ public class RocketMinerUnitTest {
         List<Launch> loadedLaunches = miner.mostRecentLaunches(k);
         Assertions.assertEquals(k, loadedLaunches.size());
         Assertions.assertEquals(sortedLaunches.subList(0, k), loadedLaunches);
+    }
+
+
+    //Exorbitance The top-k most expensive launches.
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3})
+    public void shouldReturnMostExpensiveLaunches(int k) {
+        when(dao.loadAll(Launch.class)).thenReturn(launches);
+        List<Launch> sortedLaunches = new ArrayList<>(launches);
+        sortedLaunches.sort((a, b) -> -a.getPrice() + (b.getPrice()));
+        List<Launch> loadedLaunches = miner.mostExpensiveLaunches(k);
+        assertEquals(k, loadedLaunches.size());
+        assertEquals(sortedLaunches.subList(0, k), loadedLaunches);
+    }
+
+    //BestPerformed The top-k launch service providers with the most reliable launch record.
+    @ParameterizedTest
+    @ValueSource(ints ={1, 2, 3})
+    public void shouldReturnReliableLaunchServiceProviders(int k)
+    {
+        when(dao.loadAll(LaunchServiceProvider.class)).thenReturn(lsps);
+        when(dao.loadAll(Launch.class)).thenReturn(launches);
+        // Get all Launches sorted by Number of lsps
+        List<LaunchServiceProvider> sortedLaunches = new ArrayList<>(lsps);
+        //use mostReliableLaunchServiceProviders to get all k-most reliable launch record
+        List<LaunchServiceProvider> launchServiceProviders = miner.mostReliableLaunchServiceProviders(k);
+        assertEquals(k, launchServiceProviders.size());
+        assertEquals(sortedLaunches.subList(0, k), launchServiceProviders);
+    }
+
+    // returns the successful launch rate in <code>year</code> measured by the
+    // number of successful launches and total number of launches
+    @Test
+    public void shouldReturnSuccessfulLaunchRateInYear() {
+        when(dao.loadAll(Launch.class)).thenReturn(launches);
+        long t = 0;
+        long tt = 0;
+        for (Launch launch : launches) {
+            if (launch.getLaunchDate().getYear() == 2017) {
+                tt ++;
+                if (launch.getLaunchOutcome() == Launch.LaunchOutcome.SUCCESSFUL) {
+                    t ++;
+                }
+            }
+        }
+       assertEquals( miner.successfulLaunchRateInYear(2017), BigDecimal.valueOf(t/tt));
     }
 
 }
