@@ -105,20 +105,7 @@ public class RocketMinerUnitTest {
         assertEquals(sortedLaunches.subList(0, k), loadedLaunches);
     }
 
-    //BestPerformed The top-k launch service providers with the most reliable launch record.
-    @ParameterizedTest
-    @ValueSource(ints ={1, 2, 3})
-    public void shouldReturnReliableLaunchServiceProviders(int k)
-    {
-        when(dao.loadAll(LaunchServiceProvider.class)).thenReturn(lsps);
-        when(dao.loadAll(Launch.class)).thenReturn(launches);
-        // Get all Launches sorted by Number of lsps
-        List<LaunchServiceProvider> sortedLaunches = new ArrayList<>(lsps);
-        //use mostReliableLaunchServiceProviders to get all k-most reliable launch record
-        List<LaunchServiceProvider> launchServiceProviders = miner.mostReliableLaunchServiceProviders(k);
-        assertEquals(k, launchServiceProviders.size());
-        assertEquals(sortedLaunches.subList(0, k), launchServiceProviders);
-    }
+   
 
     // returns the successful launch rate in <code>year</code> measured by the
     // number of successful launches and total number of launches
