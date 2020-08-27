@@ -25,6 +25,8 @@ public class Launch extends Entity {
     @Relationship(type = "PROVIDES", direction = INCOMING)
     private Rocket launchVehicle;
 
+  
+    
     private Set<String> payload;
 
     @Property(name = "launchSite")
@@ -49,6 +51,7 @@ public class Launch extends Entity {
     public void setLaunchDate(LocalDate launchDate) {
         this.launchDate = launchDate;
     }
+
 
     public void setLaunchVehicle(Rocket launchVehicle) {
         this.launchVehicle = launchVehicle;
@@ -113,11 +116,12 @@ public class Launch extends Entity {
         Launch launch = (Launch) o;
         return Objects.equals(launchDate, launch.launchDate) &&
                 Objects.equals(launchVehicle, launch.launchVehicle) &&
+                
                 Objects.equals(orbit, launch.orbit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(launchDate, launchVehicle, orbit);
+        return Objects.hash(launchDate, launchVehicle,orbit);
     }
 }

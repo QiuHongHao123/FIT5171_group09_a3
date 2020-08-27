@@ -21,6 +21,7 @@ public class User extends Entity {
     }
 
     public void setFirstName(String firstName) {
+    	notBlank(firstName, "firstName cannot be null or empty");
         this.firstName = firstName;
     }
 
@@ -29,6 +30,7 @@ public class User extends Entity {
     }
 
     public void setLastName(String lastName) {
+        notBlank(lastName, "lastName cannot be null or empty");
         this.lastName = lastName;
     }
 
@@ -42,10 +44,12 @@ public class User extends Entity {
     }
 
     public String getPassword() {
+    	
         return password;
     }
 
     public void setPassword(String password) {
+    	notBlank(password, "password cannot be null or empty");
         this.password = password;
     }
 
